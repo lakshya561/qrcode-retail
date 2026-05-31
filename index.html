@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Libro Plant Pots</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+}
+
+body{
+background:#eef2e8;
+padding:20px;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+}
+
+.container{
+width:100%;
+max-width:450px;
+background:white;
+border-radius:28px;
+overflow:hidden;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+.hero{
+width:100%;
+height:260px;
+overflow:hidden;
+}
+
+.hero img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.content{
+padding:25px;
+}
+
+.logo{
+text-align:center;
+font-size:32px;
+font-weight:700;
+margin-bottom:8px;
+color:#315a34;
+}
+
+.subtitle{
+text-align:center;
+color:#666;
+font-size:15px;
+margin-bottom:25px;
+line-height:1.5;
+}
+
+.progress{
+height:6px;
+background:#e6e6e6;
+border-radius:20px;
+overflow:hidden;
+margin-bottom:25px;
+}
+
+.progress-fill{
+height:100%;
+width:50%;
+background:#4d8b52;
+}
+
+input,
+select{
+width:100%;
+padding:15px;
+border:1px solid #ddd;
+border-radius:14px;
+font-size:15px;
+margin-bottom:14px;
+outline:none;
+}
+
+button{
+width:100%;
+padding:16px;
+border:none;
+border-radius:50px;
+background:#4d8b52;
+color:white;
+font-size:17px;
+font-weight:700;
+cursor:pointer;
+}
+
+button:hover{
+opacity:0.95;
+}
+
+#step2{
+display:none;
+}
+
+#success{
+display:none;
+text-align:center;
+padding:30px 10px;
+}
+
+#success h2{
+color:#4d8b52;
+margin-bottom:10px;
+font-size:30px;
+}
+
+.small{
+font-size:13px;
+color:#777;
+margin-top:15px;
+text-align:center;
+}
+
+.checkbox{
+display:flex;
+align-items:flex-start;
+gap:10px;
+margin-bottom:18px;
+}
+
+.checkbox input{
+width:auto;
+margin-top:3px;
+}
+
+.checkbox label{
+font-size:14px;
+color:#444;
+line-height:1.4;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="hero">
+<img src="image0.png">
+</div>
+
+<div class="content">
+
+<div id="step1">
+
+<div class="logo">
+Libro Plant Pots 🌿
+</div>
+
+<div class="subtitle">
+Love Plants? You're In The Right Place.<br>
+Get updates, giveaways, new launches and wholesale opportunities.
+</div>
+
+<div class="progress">
+<div class="progress-fill"></div>
+</div>
+
+<input type="text" id="name" placeholder="Full Name">
+
+<input type="tel" id="whatsapp" placeholder="WhatsApp Number">
+
+<input type="text" id="city" placeholder="City">
+
+<input type="text" id="pincode" placeholder="Pincode">
+
+<button onclick="nextStep()">
+CONTINUE
+</button>
+
+</div>
+
+<div id="step2">
+
+<div class="logo">
+Tell Us About You
+</div>
+
+<div class="progress">
+<div class="progress-fill" style="width:100%;"></div>
+</div>
+
+<select id="userType">
+<option value="">I am a...</option>
+<option>Plant Lover</option>
+<option>Nursery Owner</option>
+<option>Gift Shop Owner</option>
+<option>Home Decor Store</option>
+<option>Online Seller</option>
+<option>Corporate Gifting Business</option>
+<option>Other</option>
+</select>
+
+<select id="interest">
+<option value="">Interested In...</option>
+<option>New Designs</option>
+<option>Bulk Purchase</option>
+<option>Selling Libro Pots</option>
+<option>Custom Branding</option>
+<option>Corporate Gifts</option>
+</select>
+
+<div class="checkbox">
+
+<input type="checkbox" id="businessOwner">
+
+<label>
+I own a business and would like to discuss selling Libro Plant Pots.
+</label>
+
+</div>
+
+<button onclick="submitForm()">
+JOIN LIBRO
+</button>
+
+</div>
+
+<div id="success">
+
+<h2>Welcome To Libro 🌿</h2>
+
+<p>
+Thank you for joining the Libro Plant Pots community.
+</p>
+
+<p class="small">
+We'll keep you updated with new launches, giveaways and wholesale opportunities.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_VLGgTc62NzUxY7cSUWJ0F26aoXbyyLY1vuwouBeQqS49Sq0r_UNN5PA9TejF4A6n/exec";
+
+const params = new URLSearchParams(window.location.search);
+
+const qrId = params.get("qr") || "DIRECT";
+
+function nextStep(){
+
+let name = document.getElementById("name").value;
+
+if(name.trim()===""){
+alert("Please enter your name");
+return;
+}
+
+document.getElementById("step1").style.display="none";
+document.getElementById("step2").style.display="block";
+
+}
+
+function submitForm(){
+
+const data = {
+
+name: document.getElementById("name").value,
+whatsapp: document.getElementById("whatsapp").value,
+city: document.getElementById("city").value,
+pincode: document.getElementById("pincode").value,
+
+userType: document.getElementById("userType").value,
+
+interest: document.getElementById("interest").value,
+
+businessOwner: document.getElementById("businessOwner").checked ? "YES" : "NO",
+
+source: "Libro QR Campaign",
+
+qrId: qrId
+
+};
+
+fetch(SCRIPT_URL,{
+method:"POST",
+body:JSON.stringify(data)
+})
+.then(response=>response.json())
+.then(result=>{
+
+document.getElementById("step2").style.display="none";
+document.getElementById("success").style.display="block";
+
+})
+.catch(error=>{
+alert("Something went wrong.");
+console.log(error);
+});
+
+}
+
+</script>
+
+</body>
+</html>
