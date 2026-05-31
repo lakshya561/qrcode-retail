@@ -147,6 +147,43 @@ font-size:14px;
 color:#444;
 line-height:1.4;
 }
+#loading{
+display:none;
+text-align:center;
+padding:50px 20px;
+}
+
+.loader{
+width:70px;
+height:70px;
+margin:0 auto 25px;
+border:6px solid #e8e8e8;
+border-top:6px solid #4d8b52;
+border-radius:50%;
+animation:spin 1s linear infinite;
+}
+
+.loading-title{
+font-size:28px;
+color:#315a34;
+margin-bottom:10px;
+}
+
+.loading-text{
+color:#666;
+font-size:15px;
+line-height:1.5;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
+}
+
+button:disabled{
+opacity:0.7;
+cursor:not-allowed;
+}
 
 </style>
 
@@ -235,6 +272,19 @@ JOIN LIBRO
 </button>
 
 </div>
+<div id="loading">
+
+<div class="loader"></div>
+
+<h2 class="loading-title">
+Joining Libro...
+</h2>
+
+<p class="loading-text">
+Setting up your Libro profile 🌿
+</p>
+
+</div>
 
 <div id="success">
 
@@ -256,11 +306,38 @@ We'll keep you updated with new launches, giveaways and wholesale opportunities.
 
 <script>
 
+
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_VLGgTc62NzUxY7cSUWJ0F26aoXbyyLY1vuwouBeQqS49Sq0r_UNN5PA9TejF4A6n/exec";
 
 const params = new URLSearchParams(window.location.search);
 
 const qrId = params.get("qr") || "DIRECT";
+
+const loadingMessages = [
+"Setting up your Libro profile 🌿",
+"Saving your information...",
+"Preparing exclusive updates...",
+"Almost done..."
+];
+
+let loadingInterval;
+
+function startLoadingMessages(){
+
+let index = 0;
+
+loadingInterval = setInterval(() => {
+
+const el = document.querySelector(".loading-text");
+
+if(index < loadingMessages.length - 1){
+index++;
+el.innerText = loadingMessages[index];
+}
+
+},1000);
+
+}
 
 function nextStep(){
 
@@ -277,6 +354,11 @@ document.getElementById("step2").style.display="block";
 }
 
 function submitForm(){
+
+const joinButton = document.querySelector("#step2 button");
+
+joinButton.disabled = true;
+joinButton.innerText = "PLEASE WAIT...";
 
 const data = {
 
@@ -297,6 +379,11 @@ qrId: qrId
 
 };
 
+document.getElementById("step2").style.display="none";
+document.getElementById("loading").style.display="block";
+
+startLoadingMessages();
+
 fetch(SCRIPT_URL,{
 method:"POST",
 body:JSON.stringify(data)
@@ -304,16 +391,29 @@ body:JSON.stringify(data)
 .then(response=>response.json())
 .then(result=>{
 
-document.getElementById("step2").style.display="none";
+clearInterval(loadingInterval);
+
+document.getElementById("loading").style.display="none";
 document.getElementById("success").style.display="block";
 
 })
 .catch(error=>{
-alert("Something went wrong.");
+
+clearInterval(loadingInterval);
+
+document.getElementById("loading").style.display="none";
+
+alert("Something went wrong. Please try again.");
+
+joinButton.disabled = false;
+joinButton.innerText = "JOIN LIBRO";
+
 console.log(error);
+
 });
 
 }
+
 
 </script>
 
